@@ -55,7 +55,7 @@ setInterval(() => {
             const tweets = _.map(response.statuses, 'text');
 
             let results = qs.parse(response.search_metadata.next_results);
-            report[userIndex % report.length].stop = results['?max_id'] ? true : false;
+            report[userIndex % report.length].stop = results['?max_id'] ? undefined: true;
             report[userIndex % report.length].max_id = results['?max_id'];
             report[userIndex % report.length].numTweets += tweets.length;
 

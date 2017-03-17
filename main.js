@@ -33,7 +33,7 @@ let report = [
         numTweets: 0,
     },
     {
-        user: '@CarnivalPr',
+        user: 'carnival cruise',
         sentiment: 0.0,
         numTweets: 0
     }
@@ -44,11 +44,11 @@ setInterval(() => {
         {
             q: report[userIndex % report.length].user,
             count: 100,
-            max_id: report[userIndex % report.length].max_id
+            max_id: report[userIndex % report.length].max_id,
+            result_type: 'recent'
         },
         (err, response, res) => {
-            const tweets = _.map(_.filter(response.statuses,
-                tweet => tweet.user.screen_name.toLowerCase() !== report[userIndex % report.length].user.replace("@", "").toLowerCase()), 'text');
+            const tweets = _.map(response.statuses, 'text');
 
             let results = qs.parse(response.search_metadata.next_results);
             report[userIndex % report.length].max_id = results['?max_id'];

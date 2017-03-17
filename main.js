@@ -33,7 +33,22 @@ let report = [
         numTweets: 0,
     },
     {
-        user: 'carnival cruise',
+        user: '@CarnivalPR',
+        sentiment: 0.0,
+        numTweets: 0
+    },
+    {
+        user: '@CarnivalOz',
+        sentiment: 0.0,
+        numTweets: 0
+    },
+    {
+        user: '@pandocruises',
+        sentiment: 0.0,
+        numTweets: 0
+    },
+    {
+        user: '@LindBladExp',
         sentiment: 0.0,
         numTweets: 0
     }
@@ -52,11 +67,11 @@ setInterval(() => {
             result_type: 'recent'
         },
         (err, response, res) => {
-            const tweets = _.map(response.statuses, 'text');
+            const tweets = _.map(_.filter(response.statuses, status => status.user.screen_name.toLowerCase() !== report[userIndex % report.length].user.replace("@", "").toLowerCase()), 'text');
 
-            let results = qs.parse(response.search_metadata.next_results);
-            report[userIndex % report.length].stop = results['?max_id'] ? undefined: true;
-            report[userIndex % report.length].max_id = results['?max_id'];
+            let results = response.search_metadata;
+            report[userIndex % report.length].stop = results.max_id_str ? undefined : true;
+            report[userIndex % report.length].max_id = results.max_id_str;
             report[userIndex % report.length].numTweets += tweets.length;
 
             const averaging = report[userIndex % report.length].sentiment != 0;

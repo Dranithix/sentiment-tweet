@@ -53,7 +53,10 @@ setInterval(() => {
             let results = qs.parse(response.search_metadata.next_results);
             report[userIndex % report.length].max_id = results['?max_id'];
             report[userIndex % report.length].numTweets += tweets.length;
-            report[userIndex % report.length].sentiment = _.sumBy(tweets, tweet => analyze(tweet)) / tweets.length;
+
+            const averaging = report[userIndex % report.length].sentiment != 0;
+            report[userIndex % report.length].sentiment += _.sumBy(tweets, tweet => analyze(tweet)) / tweets.length;
+            if (averaging) report[userIndex % report.length].sentiment /= 2;
 
             console.log(report[userIndex % report.length]);
 
